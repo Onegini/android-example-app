@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Onegini B.V.
+ * Copyright (c) 2016-2018 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,12 @@ package com.onegini.mobile.exampleapp.view.handler;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import com.onegini.mobile.sdk.android.handlers.request.OneginiRegistrationRequestHandler;
-import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiRegistrationCallback;
+import com.onegini.mobile.sdk.android.handlers.request.OneginiBrowserRegistrationRequestHandler;
+import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiBrowserRegistrationCallback;
 
-public class RegistrationRequestHandler implements OneginiRegistrationRequestHandler {
+public class RegistrationRequestHandler implements OneginiBrowserRegistrationRequestHandler {
 
-  private static OneginiRegistrationCallback CALLBACK;
+  private static OneginiBrowserRegistrationCallback CALLBACK;
 
   /**
    * Finish registration action with result from web browser
@@ -53,8 +53,8 @@ public class RegistrationRequestHandler implements OneginiRegistrationRequestHan
   }
 
   @Override
-  public void startRegistration(final Uri uri, final OneginiRegistrationCallback oneginiRegistrationCallback) {
-    CALLBACK = oneginiRegistrationCallback;
+  public void startRegistration(final Uri uri, final OneginiBrowserRegistrationCallback oneginiBrowserRegistrationCallback) {
+    CALLBACK = oneginiBrowserRegistrationCallback;
 
     // We're going to launch external browser to allow user to log in. You could also use embedded WebView instead.
     final Intent intent = new Intent(Intent.ACTION_VIEW, uri);

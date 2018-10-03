@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Onegini B.V.
+ * Copyright (c) 2016-2018 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
   private final String appIdentifier = "PenTest";
   private final String appPlatform = "android";
   private final String redirectionUri = "pentest://redirect";
-  private final String appVersion = "2.4.0";
+  private final String appVersion = "5.1.0";
   private final String baseURL = "https://demo-msp.onegini.com";
   private final String resourceBaseURL = "https://demo-msp.onegini.com/resources";
   private final String keystoreHash = "910638c3e6c17ec9ab2a74969abab06b34470d29c21d8ad8a65af243a1ccb69f";
@@ -73,11 +73,6 @@ public class OneginiConfigModel implements OneginiClientConfigModel {
   @Override
   public String getDeviceName() {
     return Build.BRAND + " " + Build.MODEL;
-  }
-
-  @Override
-  public boolean shouldGetIdToken() {
-    return false;
   }
 
   @Override

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.onegini.mobile.exampleapp.view.activity.InfoActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:text="@string/toolbar_name_info"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:id="@+id/toolbar_title"/>
+
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/user_details_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/user_details_label_text"
+        android:layout_below="@id/toolbar"
+        android:textSize="20sp"
+        android:layout_margin="@dimen/activity_margin"/>
+
+    <RelativeLayout
+        android:id="@+id/user_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user_details_label"
+        android:layout_marginLeft="@dimen/activity_margin_small"
+        android:layout_marginStart="@dimen/activity_margin_small">
+
+        <TextView
+            android:id="@+id/user_profile_id_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_margin_small"
+            android:text="@string/user_profile_id_label_text"/>
+
+        <TextView
+            android:id="@+id/user_profile_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/user_profile_id_label"
+            android:layout_toRightOf="@+id/user_profile_id_label"
+            android:layout_toEndOf="@+id/user_profile_id_label"/>
+
+        <TextView
+            android:id="@+id/user_profile_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_profile_id_label"
+            android:layout_margin="@dimen/activity_margin_small"
+            android:text="@string/user_profile_name_label_text"/>
+
+        <TextView
+            android:id="@+id/user_profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/user_profile_name_label"
+            android:layout_toRightOf="@id/user_profile_name_label"
+            android:layout_toEndOf="@id/user_profile_name_label"
+            android:layout_margin="@dimen/activity_margin_small"/>
+
+        <TextView
+            android:id="@+id/implicit_details_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_profile_name"
+            android:layout_margin="@dimen/activity_margin_small"
+            android:text="@string/implicit_details_label_text"/>
+
+        <TextView
+            android:id="@+id/implicit_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/implicit_details_label"
+            android:layout_toRightOf="@id/implicit_details_label"
+            android:layout_toEndOf="@id/implicit_details_label"
+            android:layout_margin="@dimen/activity_margin_small"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/device_details_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user_details"
+        android:textSize="20sp"
+        android:layout_margin="@dimen/activity_margin"
+        android:text="@string/device_details_label_text"/>
+
+    <RelativeLayout
+        android:id="@+id/device_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/device_details_label"
+        android:layout_marginLeft="@dimen/activity_margin_small"
+        android:layout_marginStart="@dimen/activity_margin_small">
+
+        <TextView
+            android:id="@+id/application_id_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_margin_small"
+            android:text="@string/application_id_label_text"/>
+
+        <TextView
+            android:id="@+id/application_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/application_id_label"
+            android:layout_toRightOf="@+id/application_id_label"
+            android:layout_toEndOf="@+id/application_id_label"/>
+
+        <TextView
+            android:id="@+id/application_version_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/application_id_label"
+            android:layout_margin="@dimen/activity_margin_small"
+            android:text="@string/application_version_label_text"/>
+
+        <TextView
+            android:id="@+id/application_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/application_version_label"
+            android:layout_toRightOf="@id/application_version_label"
+            android:layout_toEndOf="@id/application_version_label"
+            android:layout_margin="@dimen/activity_margin_small"/>
+
+        <TextView
+            android:id="@+id/platform_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/application_version_label"
+            android:layout_margin="@dimen/activity_margin_small"
+            android:text="@string/platform_label_text"/>
+
+        <TextView
+            android:id="@+id/platform"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/platform_label"
+            android:layout_margin="@dimen/activity_margin_small"
+            android:layout_toRightOf="@+id/platform_label"
+            android:layout_toEndOf="@+id/platform_label"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/device_details_fetch_failed"
+        android:layout_below="@id/device_details_label"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_margin"
+        android:text="@string/fetch_application_details_exception"/>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:itemBackground="@color/colorPrimary"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
+        app:menu="@menu/bottom_navigation_menu"/>
+
+</RelativeLayout>

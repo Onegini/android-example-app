@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Onegini B.V.
+ * Copyright (c) 2016-2018 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.adapter.DevicesAdapter;
@@ -40,13 +40,13 @@ import rx.Subscription;
 public class DevicesListActivity extends AppCompatActivity {
 
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.toolbar)
+  @BindView(R.id.toolbar)
   Toolbar toolbar;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.recycler_view)
+  @BindView(R.id.recycler_view)
   RecyclerView recyclerView;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.progress_bar)
+  @BindView(R.id.progress_bar)
   ProgressBar progressBar;
 
   private DeviceSettingsStorage deviceSettingsStorage;

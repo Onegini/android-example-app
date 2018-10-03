@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Onegini B.V.
+ * Copyright (c) 2016-2018 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,15 @@ allprojects {
   repositories {
     mavenLocal()
     mavenCentral()
+    // REQUIRED: Google's new Maven repo is required for the latest
+    // support library that is compatible with Android 8.0
+    google()
     if (project.hasProperty('artifactory_user') && project.hasProperty('artifactory_password')) {
       maven {
+        /*
+        Before the release please change the url below to: https://repo.onegini.com/artifactory/onegini-sdk
+        Please change it back to https://repo.onegini.com/artifactory/public after the release
+        */
         url "https://repo.onegini.com/artifactory/public"
         credentials {
           username artifactory_user
@@ -38,8 +45,8 @@ allprojects {
 }
 
 android {
-  compileSdkVersion 23
-  buildToolsVersion "23.0.3"
+  compileSdkVersion 27
+  buildToolsVersion '27.0.3'
 
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
@@ -49,15 +56,15 @@ android {
   defaultConfig {
     applicationId "com.onegini.mobile.exampleapp"
     minSdkVersion 16
-    targetSdkVersion 23
-    versionCode 7
-    versionName "2.4.0"
+    targetSdkVersion 27
+    versionCode 14
+    versionName "5.1.0"
     multiDexEnabled true
   }
   buildTypes {
     release {
-      minifyEnabled false
-      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+      minifyEnabled true
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-example-app.pro'
     }
   }
   dexOptions {
@@ -73,36 +80,38 @@ android {
 
 dependencies {
   // Onegini SDK
-  compile('com.onegini.mobile.sdk.android:onegini-sdk:6.04.00-SNAPSHOT@aar') {
+  api('com.onegini.mobile.sdk.android:onegini-sdk:9.1.1-SNAPSHOT@aar') {
     transitive = true
-    exclude module: 'fido-client'
-    exclude module: 'samsungsds-ccom'
   }
 
   // Rest Client
-  compile 'com.squareup.retrofit:retrofit:1.9.0'
-  compile 'com.squareup.retrofit2:retrofit:2.1.0'
-  compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-  compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+  implementation 'com.squareup.retrofit:retrofit:1.9.0'
+  implementation 'com.squareup.retrofit2:adapter-rxjava:2.4.0'
+  // we have to use this wrapper for Retrofit 1 + OkHttp 3 usage
+  implementation 'com.jakewharton.retrofit:retrofit1-okhttp3-client:1.1.0'
 
   // Google Support
-  compile 'com.android.support:appcompat-v7:23.3.0'
-  compile 'com.android.support:cardview-v7:23.3.0'
-  compile 'com.android.support:recyclerview-v7:23.3.0'
+  implementation 'com.android.support:appcompat-v7:27.1.1'
+  implementation 'com.android.support:cardview-v7:27.1.1'
+  implementation 'com.android.support:design:27.1.1'
+  implementation 'com.android.support:recyclerview-v7:27.1.1'
+  implementation 'com.android.support:support-core-ui:27.1.1'
 
-  // Google cloud messaging (GCM)
-  compile 'com.google.android.gms:play-services-gcm:9.6.1'
-
+  // QR code reader
+  implementation 'com.google.android.gms:play-services-vision:15.0.0'
+  // Google Play Services availability check
+  implementation 'com.google.android.gms:play-services-base:15.0.1'
+  //Firebase Cloud Messaging (FCM)
+  implementation 'com.google.firebase:firebase-messaging:15.0.2'
   // Support for multidex
-  compile 'com.android.support:multidex:1.0.1'
+  implementation 'com.android.support:multidex:1.0.2'
   // DI for views
-  compile 'com.jakewharton:butterknife:7.0.1'
+  implementation 'com.jakewharton:butterknife:8.8.1'
+  annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
   // RxJava
-  compile 'io.reactivex:rxandroid:1.2.1'
-  compile 'io.reactivex:rxjava:1.2.3'
-
-  // Samsung's FIDO client
-  compile 'com.samsung.sds.fido.uaf.sdk:fido-client:1.4.1@aar'
-  compile 'org.fidoalliance.uaf.client.common:samsungsds-ccom:1.4.1@aar'
-  compile 'com.samsung.sds.fido.uaf.message:samsungsds-um:1.4.1'
+  implementation 'io.reactivex:rxandroid:1.2.1'
+  implementation 'io.reactivex:rxjava:1.2.3'
 }
+
+//according to google documentation, this plugin has to be applied at the end of the file
+apply plugin: 'com.google.gms.google-services'

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Onegini B.V.
+ * Copyright (c) 2016-2018 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.handler.CreatePinRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.PinAuthenticationRequestHandler;
@@ -39,8 +40,9 @@ public class PinActivity extends AuthenticationActivity {
   protected static final int MAX_DIGITS = 5;
 
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.pin_error_message)
+  @BindView(R.id.pin_error_message)
   TextView errorTextView;
+
 
   protected int failedAttemptsCount;
   protected int maxFailedAttempts;
@@ -118,6 +120,11 @@ public class PinActivity extends AuthenticationActivity {
   private void initLayout() {
     initPinInputs();
     updateTexts();
+    setCancelButtonVisibility();
+  }
+
+  protected void setCancelButtonVisibility() {
+    cancelButton.setVisibility(View.VISIBLE);
   }
 
   private void initPinInputs() {
@@ -148,6 +155,21 @@ public class PinActivity extends AuthenticationActivity {
       CreatePinRequestHandler.CALLBACK.onPinProvided(pin);
     } else {
       PinAuthenticationRequestHandler.CALLBACK.acceptAuthenticationRequest(pin);
+    }
+  }
+
+  @SuppressWarnings("unused")
+  @OnClick(R.id.auth_cancel_button)
+  public void onCancelClicked() {
+    cancelRequest();
+  }
+
+  @Override
+  protected void cancelRequest() {
+    if (isCreatePinFlow) {
+      CreatePinRequestHandler.CALLBACK.pinCancelled();
+    } else {
+      PinAuthenticationRequestHandler.CALLBACK.denyAuthenticationRequest();
     }
   }
 }

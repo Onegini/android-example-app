@@ -1,5 +1,5 @@
 <!--
-  Copyright (c) 2016-2017 Onegini B.V.
+  Copyright (c) 2016-2018 Onegini B.V.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -17,7 +17,9 @@
 <resources>
     <string name="app_name">Example App</string>
     <string name="btn_login_label">LOG IN</string>
+    <string name="btn_login_with_label">LOG IN WITH...</string>
     <string name="btn_register_label">REGISTER</string>
+    <string name="btn_register_with_label">REGISTER WITH...</string>
     <string name="pin_error_invalid_pin">Wrong PIN, %1$d attempt(s) left</string>
     <string name="pin_title_choose_pin">Create PIN</string>
     <string name="pin_title_verify_pin">Confirm PIN</string>
@@ -32,8 +34,6 @@
     <string name="btn_your_devices">Your devices</string>
     <string name="confirm">Confirm</string>
     <string name="confirm_with_fingerprint">Confirm with fingerprint</string>
-    <string name="confirm_with_fido">Authenticate with FIDO</string>
-    <string name="do_you_want_to_confirm_with_fido">Do you want to authenticate with FIDO?</string>
     <string name="scan_fingerprint">Touch sensor</string>
     <string name="use_pin_authentication">Use PIN code</string>
     <string name="try_again">Try again…</string>
@@ -46,9 +46,11 @@
     <string name="welcome_user_text">Hello, %1$s!</string>
     <string name="settings_title">Settings</string>
     <string name="btn_settings_label">SETTINGS</string>
-    <string name="settings_mobile_enrollment_off">Enable mobile authentication</string>
-    <string name="settings_mobile_enrollment_on">Mobile authentication enabled</string>
-    <string name="settings_mobile_enrollment_not_available">Mobile authentication not available</string>
+    <string name="settings_mobile_enrollment_off">Enroll for mobile auth</string>
+    <string name="settings_mobile_enrollment_on">Re-enroll for mobile auth</string>
+    <string name="settings_mobile_push_enrollment_off">Enroll for mobile auth with push</string>
+    <string name="settings_mobile_push_enrollment_on">Re-enroll for mobile auth with push</string>
+    <string name="settings_mobile_push_enrollment_not_available">Mobile auth with push not available</string>
     <string name="btn_auth_accept">Accept</string>
     <string name="btn_auth_deny">Deny</string>
     <string name="settings_change_pin">Change PIN</string>
@@ -57,7 +59,46 @@
     <string name="settings_authentication_method">Login Method</string>
     <string name="settings_retrofit_client">Client for resource calls:</string>
     <string name="toolbar_name_devices_activity">Devices</string>
+    <string name="toolbar_name_pending_notifications">Pending notifications</string>
+    <string name="toolbar_name_info">Info</string>
     <string name="settings_authenticators_possible_authenticators">Possible authenticators:</string>
     <string name="simple_push_message">Simple push message</string>
-    <string name="change_pin_finished_succesfully">Change PIN action finished successfully</string>
+    <string name="change_pin_finished_successfully">Change PIN action finished successfully</string>
+    <string name="btn_mobile_auth_with_otp_label">Mobile auth with OTP</string>
+    <string name="btn_cancel_label">CANCEL</string>
+    <string name="btn_ok_label">OK</string>
+    <string name="push_token_is_null_error_message">The push token is null, check if your Firebase configuration in google-services.json file is valid.</string>
+    <string name="use_preferred_authenticator_label">USE PREFERRED AUTHENTICATOR</string>
+    <string name="use_default_identity_provider_label">USE DEFAULT IDENTITY PROVIDER</string>
+    <string name="implicit_user_details_fetch_failed_label">failed to fetch</string>
+    <string name="custom_auth_positive_action">Return success</string>
+    <string name="custom_auth_negative_action">Return failure</string>
+    <string name="custom_auth_error_action">Return error</string>
+    <string name="custom_auth_password_enter">Confirm</string>
+    <string name="custom_auth_password_cancel">Cancel</string>
+    <string name="custom_auth_password">Password</string>
+    <string name="do_you_want_to_confirm_with_custom_auth">Do you want to authenticate with custom authenticator?</string>
+    <string name="custom_auth_registration_title">Auth registration</string>
+    <string name="custom_auth_deregistration_title">Auth deregistration</string>
+    <string name="custom_auth_authentication_title">Authentication</string>
+    <string name="enable_mobile_authentication_finished_successfully">Mobile authentication enabled</string>
+    <string name="enable_mobile_authentication_with_push_finished_successfully">Mobile authentication with push enabled</string>
+    <string name="navigation_menu_home">Home</string>
+    <string name="navigation_menu_info">Info</string>
+    <string name="no_notifications">No notifications</string>
+    <string name="multiple_notifications">Notifications: %1$d</string>
+    <string name="notification_expires_at">Will expire at %1$s</string>
+    <string name="user_details_label_text">User details:</string>
+    <string name="user_profile_id_label_text">User profile ID:</string>
+    <string name="user_profile_name_label_text">User profile name:</string>
+    <string name="implicit_details_label_text">Implicit details:</string>
+    <string name="device_details_label_text">Device details:</string>
+    <string name="application_id_label_text">Application ID:</string>
+    <string name="application_version_label_text">Application version:</string>
+    <string name="fetch_application_details_exception">Couldn\'t fetch application details</string>
+    <string name="platform_label_text">Platform:</string>
+    <string name="two_way_otp_message">One-Time Password</string>
+    <string name="two_way_otp_challenge_code_label">Challenge code</string>
+    <string name="two_way_otp_response_code_label">Response code</string>
+    <string name="qr_code_message">Scan QR code</string>
 </resources>

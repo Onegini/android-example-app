@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Onegini B.V.
+ * Copyright (c) 2016-2018 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.Constants;
@@ -41,31 +41,51 @@ import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
 import com.onegini.mobile.exampleapp.view.handler.RegistrationRequestHandler;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiRegistrationHandler;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiRegistrationError;
+import com.onegini.mobile.sdk.android.model.OneginiIdentityProvider;
+import com.onegini.mobile.sdk.android.model.entity.CustomInfo;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class RegistrationActivity extends Activity {
 
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.name_edit_text)
+  @BindView(R.id.name_edit_text)
   EditText nameEditText;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.create_profile_button)
+  @BindView(R.id.create_profile_button)
   Button createProfileButton;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.cancel_registration_button)
+  @BindView(R.id.cancel_registration_button)
   Button cancelRegistrationButton;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.progress_bar_register)
+  @BindView(R.id.progress_bar_register)
   ProgressBar progressBar;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.layout_register_content)
+  @BindView(R.id.layout_register_content)
   LinearLayout layoutRegisterContent;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.user_profile_debug)
+  @BindView(R.id.user_profile_debug)
   TextView userProfileDebugText;
 
+  public static final String IDENTITY_PROVIDER_EXTRA = "identity_provider_id";
+
   private UserProfile registeredProfile;
+
+  final OneginiRegistrationHandler registrationHandler = new OneginiRegistrationHandler() {
+
+    @Override
+    public void onSuccess(final UserProfile userProfile, final CustomInfo customInfo) {
+      registeredProfile = userProfile;
+      userProfileDebugText.setText(userProfile.getProfileId());
+      askForProfileName();
+    }
+
+    @Override
+    public void onError(final OneginiRegistrationError oneginiRegistrationError) {
+      handleRegistrationErrors(oneginiRegistrationError);
+    }
+  };
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -74,7 +94,8 @@ public class RegistrationActivity extends Activity {
     ButterKnife.bind(this);
 
     setupUserInterface();
-    registerUser();
+    final OneginiIdentityProvider oneginiIdentityProvider = getIntent().getParcelableExtra(IDENTITY_PROVIDER_EXTRA);
+    registerUser(oneginiIdentityProvider);
   }
 
   private void setupUserInterface() {
@@ -104,22 +125,9 @@ public class RegistrationActivity extends Activity {
     }
   }
 
-  private void registerUser() {
+  private void registerUser(final OneginiIdentityProvider identityProvider) {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
-    oneginiClient.getUserClient().registerUser(Constants.DEFAULT_SCOPES, new OneginiRegistrationHandler() {
-
-      @Override
-      public void onSuccess(final UserProfile userProfile) {
-        registeredProfile = userProfile;
-        userProfileDebugText.setText(userProfile.getProfileId());
-        askForProfileName();
-      }
-
-      @Override
-      public void onError(final OneginiRegistrationError oneginiRegistrationError) {
-        handleRegistrationErrors(oneginiRegistrationError);
-      }
-    });
+    oneginiClient.getUserClient().registerUser(identityProvider, Constants.DEFAULT_SCOPES, registrationHandler);
   }
 
   private void handleRegistrationErrors(final OneginiRegistrationError oneginiRegistrationError) {
@@ -133,15 +141,26 @@ public class RegistrationActivity extends Activity {
       case OneginiRegistrationError.ACTION_CANCELED:
         showToast("Registration was cancelled");
         break;
-      case OneginiRegistrationError.NETWORK_CONNECTIVITY_PROBLEM:
-      case OneginiRegistrationError.SERVER_NOT_REACHABLE:
+      case OneginiAuthenticationError.NETWORK_CONNECTIVITY_PROBLEM:
         showToast("No internet connection.");
+        break;
+      case OneginiAuthenticationError.SERVER_NOT_REACHABLE:
+        showToast("The server is not reachable.");
         break;
       case OneginiRegistrationError.OUTDATED_APP:
         showToast("Please update this application in order to use it.");
         break;
       case OneginiRegistrationError.OUTDATED_OS:
         showToast("Please update your Android version to use this application.");
+        break;
+      case OneginiRegistrationError.INVALID_IDENTITY_PROVIDER:
+        showToast("The Identity provider you were trying to use is invalid.");
+        break;
+      case OneginiRegistrationError.CUSTOM_REGISTRATION_EXPIRED:
+        showToast("Custom registration request has expired. Please retry.");
+        break;
+      case OneginiRegistrationError.CUSTOM_REGISTRATION_FAILURE:
+        showToast("Custom registration request has failed, see logcat for more details.");
         break;
       case OneginiRegistrationError.GENERAL_ERROR:
       default:
@@ -154,15 +173,12 @@ public class RegistrationActivity extends Activity {
     finish();
   }
 
-  private void handleGeneralError(final OneginiRegistrationError oneginiRegistrationError) {
-    final StringBuilder stringBuilder = new StringBuilder("General error: ");
-    stringBuilder.append(oneginiRegistrationError.getErrorDescription());
+  private void handleGeneralError(final OneginiRegistrationError error) {
+    final StringBuilder stringBuilder = new StringBuilder("Error: ");
+    stringBuilder.append(error.getMessage());
+    stringBuilder.append(" Check logcat for more details.");
 
-    final Exception exception = oneginiRegistrationError.getException();
-    if (exception != null) {
-      stringBuilder.append(" Check logcat for more details.");
-      exception.printStackTrace();
-    }
+    error.printStackTrace();
 
     showToast(stringBuilder.toString());
   }
@@ -207,12 +223,12 @@ public class RegistrationActivity extends Activity {
 
     @Override
     public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
-
+      //nothing to do here
     }
 
     @Override
     public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
-
+      //nothing to do here
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Onegini B.V.
+ * Copyright (c) 2016-2018 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,20 +18,25 @@ package com.onegini.mobile.exampleapp.view.activity;
 
 import android.view.View;
 import android.widget.Button;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationPinRequestHandler;
 
 public class MobileAuthenticationPinActivity extends PinActivity {
 
-  @Bind(R.id.auth_deny_button)
+  @BindView(R.id.auth_deny_button)
   Button denyButton;
 
   @Override
   protected void initialize() {
     super.initialize();
     initDenyButton();
+  }
+
+  @Override
+  protected void setCancelButtonVisibility() {
+    cancelButton.setVisibility(View.GONE);
   }
 
   @Override
@@ -64,5 +69,10 @@ public class MobileAuthenticationPinActivity extends PinActivity {
     if (MobileAuthenticationPinRequestHandler.CALLBACK != null) {
       MobileAuthenticationPinRequestHandler.CALLBACK.denyAuthenticationRequest();
     }
+  }
+
+  @Override
+  protected void cancelRequest() {
+    //we don't want to cancel it. We already have accept and deny buttons - third option isn't needed
   }
 }

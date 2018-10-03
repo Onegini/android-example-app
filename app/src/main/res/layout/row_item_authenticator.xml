@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright (c) 2016-2017 Onegini B.V.
+  Copyright (c) 2016-2018 Onegini B.V.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -21,17 +21,6 @@
     android:layout_height="48dp"
     android:background="@color/switcher_light">
 
-    <TextView
-        android:id="@+id/authenticator_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="14dp"
-        android:layout_alignParentLeft="true" />
-
-
     <ProgressBar
         android:id="@+id/progress_bar_authenticators"
         style="@style/Widget.AppCompat.ProgressBar"
@@ -43,12 +32,17 @@
 
     <Switch
         android:id="@+id/authenticator_switch"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="false"
         android:focusable="false"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
+        android:textSize="18sp"
+        android:maxLines="2"
+        android:textColor="#808080"
+        android:ellipsize="end"
+        android:textStyle="bold"
+        android:layout_marginLeft="14dp"
+        android:layout_marginStart="14dp"
         android:layout_centerVertical="true" />
 
 </RelativeLayout>

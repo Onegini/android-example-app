@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright (c) 2016-2017 Onegini B.V.
+  Copyright (c) 2016-2018 Onegini B.V.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -61,15 +61,25 @@
 
     <include
         layout="@layout/view_auth_accept_deny_buttons"
+        android:id="@+id/content_accept_deny"
         android:layout_below="@+id/content_fingerprint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:orientation="vertical">
     <Button
         android:id="@+id/fallback_to_pin_button"
         style="@style/ButtonStyle"
         android:layout_marginBottom="24dp"
-        android:text="@string/use_pin_authentication"
-        android:layout_alignParentBottom="true"/>
+        android:text="@string/use_pin_authentication"/>
 
+    <include layout="@layout/cancel_button"/>
 
+    </LinearLayout>
 </RelativeLayout>

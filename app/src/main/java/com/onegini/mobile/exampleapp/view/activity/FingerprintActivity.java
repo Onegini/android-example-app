@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Onegini B.V.
+ * Copyright (c) 2016-2018 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
@@ -34,13 +34,13 @@ import com.onegini.mobile.exampleapp.view.handler.FingerprintAuthenticationReque
 
 public class FingerprintActivity extends AuthenticationActivity {
 
-  @Bind(R.id.action_text)
+  @BindView(R.id.action_text)
   TextView actionTextView;
-  @Bind(R.id.content_fingerprint)
+  @BindView(R.id.content_fingerprint)
   LinearLayout layoutFingerprint;
-  @Bind(R.id.content_accept_deny)
+  @BindView(R.id.content_accept_deny)
   LinearLayout layoutAcceptDeny;
-  @Bind(R.id.fallback_to_pin_button)
+  @BindView(R.id.fallback_to_pin_button)
   Button fallbackToPinButton;
 
   @Override
@@ -56,8 +56,13 @@ public class FingerprintActivity extends AuthenticationActivity {
   protected void initialize() {
     parseIntent();
     updateTexts();
-    setupUi();
     setFingerprintAuthenticationPermissionVisibility(false);
+    setCancelButtonVisibility();
+    setupUi();
+  }
+
+  protected void setCancelButtonVisibility() {
+    cancelButton.setVisibility(View.VISIBLE);
   }
 
   protected void setupUi() {
@@ -85,5 +90,19 @@ public class FingerprintActivity extends AuthenticationActivity {
     layoutAcceptDeny.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     layoutFingerprint.setVisibility(isVisible ? View.GONE : View.VISIBLE);
     fallbackToPinButton.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+  }
+
+  @SuppressWarnings("unused")
+  @OnClick(R.id.auth_cancel_button)
+  public void onCancelClicked() {
+    cancelRequest();
+  }
+
+  @Override
+  protected void cancelRequest() {
+    if(FingerprintAuthenticationRequestHandler.CALLBACK != null) {
+      FingerprintAuthenticationRequestHandler.CALLBACK.denyAuthenticationRequest();
+      finish();
+    }
   }
 }

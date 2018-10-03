@@ -1,8 +1,6 @@
 # Android Example App
 
-[![Build Status](https://travis-ci.org/Onegini/android-example-app.svg?branch=master)](https://travis-ci.org/Onegini/android-example-app)
-
-The Android Example App is using the Onegini Android SDK to perform secure authentication and resource calls. Please have a look at the 
+The Android Example App is using the Onegini Android SDK to perform secure authentication and resource calls. Please have a look at the
 [App developer quickstart](https://docs.onegini.com/app-developer-quickstart.html) if you want more information about how to get setup with this 
 example app.
 
@@ -24,3 +22,11 @@ artifactory_password=<password>
 
 See the documentation below for instructions on setting Gradle properties:
 [https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_properties_and_system_properties](https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_properties_and_system_properties)
+
+## Receiving push messages (optional)
+
+In order to use the Firebase Cloud Messaging you need to replace sample `app/google-services.json` file with one downloaded from 
+the [Firebase Console](https://console.firebase.google.com/). If you need more information on how to set it up, please take a look at 
+[Google Documentation](https://firebase.google.com/docs/android/setup#manually_add_firebase). 
+
+If you ignore this step, you won't be able to receive push messages from the Token Server.

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright (c) 2016-2017 Onegini B.V.
+  Copyright (c) 2016-2018 Onegini B.V.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -51,9 +51,10 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="32dp">
+        android:layout_marginBottom="16dp">
 
         <TextView
+            android:id="@+id/settings_authenticator_selector_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/settings_authentication_method"
@@ -74,9 +75,23 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@id/settings_authenticator_selector_label"
+            android:layout_toEndOf="@id/settings_authenticator_selector_label"
+            android:gravity="right"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:maxLines="1"/>
 
     </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/result"
+        android:layout_margin="16dp"
+        android:textAlignment="center"
+        android:ellipsize="end"
+        android:maxLines="3"/>
 
     <TextView
         android:layout_width="wrap_content"

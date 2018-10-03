@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Onegini B.V.
+ * Copyright (c) 2016-2018 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package com.onegini.mobile.exampleapp;
 public interface Constants {
   String[] DEFAULT_SCOPES = { "read" };
   String NEW_LINE = "\n";
-  String GCM_SENDER_ID = "586427927998";
+  String FCM_SENDER_ID = "586427927998";
   String EXTRA_COMMAND = "command";
   String COMMAND_START = "start";
   String COMMAND_FINISH = "finish";

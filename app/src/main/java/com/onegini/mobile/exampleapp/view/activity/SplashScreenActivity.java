@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Onegini B.V.
+ * Copyright (c) 2016-2018 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,13 +19,15 @@ package com.onegini.mobile.exampleapp.view.activity;
 import java.util.Set;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
+import com.onegini.mobile.exampleapp.network.fcm.NotificationHelper;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
+import com.onegini.mobile.exampleapp.view.helper.AlertDialogFragment;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiInitializationHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiError;
@@ -41,8 +43,9 @@ public class SplashScreenActivity extends Activity {
     super.onCreate(savedInstanceState);
     this.userStorage = new UserStorage(this);
 
-    setContentView(R.layout.activity_login);
+    setContentView(R.layout.activity_splashscreen);
     setupOneginiSDK();
+    cancelAllNotifications();
   }
 
   private void setupOneginiSDK() {
@@ -64,18 +67,24 @@ public class SplashScreenActivity extends Activity {
     });
   }
 
+  private void cancelAllNotifications() {
+    NotificationHelper.getInstance(this).cancelAllNotifications();
+  }
+
   private void handleInitializationErrors(final OneginiInitializationError error) {
     @OneginiInitializationError.InitializationErrorType int errorType = error.getErrorType();
     switch (errorType) {
       case OneginiInitializationError.NETWORK_CONNECTIVITY_PROBLEM:
+        showError("No internet connection.");
+        break;
       case OneginiInitializationError.SERVER_NOT_REACHABLE:
-        showToast("No internet connection.");
+        showError("The server is not reachable.");
         break;
       case OneginiInitializationError.OUTDATED_APP:
-        showToast("Please update this application in order to use it.");
+        showError("Please update this application in order to use it.");
         break;
       case OneginiInitializationError.OUTDATED_OS:
-        showToast("Please update your Android version to use this application.");
+        showError("Please update your Android version to use this application.");
         break;
       case OneginiInitializationError.DEVICE_DEREGISTERED:
         // in this case clear the local storage from the device and all user related data
@@ -92,21 +101,16 @@ public class SplashScreenActivity extends Activity {
 
   private void onDeviceDeregistered() {
     new DeregistrationUtil(this).onDeviceDeregistered();
-    showToast("Device deregistered");
-    startLoginActivity();
+    showError(OneginiInitializationError.DEVICE_DEREGISTERED + ": Device deregistered");
   }
 
   private void displayError(final OneginiError error) {
-    final StringBuilder stringBuilder = new StringBuilder("Error: ");
-    stringBuilder.append(error.getErrorDescription());
+    final StringBuilder stringBuilder = new StringBuilder(error.getMessage());
+    stringBuilder.append(" Check logcat for more details.");
 
-    final Exception exception = error.getException();
-    if (exception != null) {
-      stringBuilder.append(" Check logcat for more details.");
-      exception.printStackTrace();
-    }
+    error.printStackTrace();
 
-    showToast(stringBuilder.toString());
+    showError(stringBuilder.toString());
   }
 
   private void removeUserProfiles(final Set<UserProfile> removedUserProfiles) {
@@ -120,7 +124,8 @@ public class SplashScreenActivity extends Activity {
     finish();
   }
 
-  private void showToast(final String message) {
-    Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+  private void showError(final String message) {
+    final DialogFragment dialog = AlertDialogFragment.newInstance(message);
+    dialog.show(getFragmentManager(), "alert_dialog");
   }
 }

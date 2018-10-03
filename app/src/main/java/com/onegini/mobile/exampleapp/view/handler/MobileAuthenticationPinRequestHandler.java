@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Onegini B.V.
+ * Copyright (c) 2016-2018 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,21 +28,21 @@ import static com.onegini.mobile.exampleapp.view.activity.PinActivity.EXTRA_MAX_
 import android.content.Context;
 import android.content.Intent;
 import com.onegini.mobile.exampleapp.view.activity.MobileAuthenticationPinActivity;
-import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthenticationPinRequestHandler;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthenticationError;
+import com.onegini.mobile.sdk.android.handlers.request.OneginiMobileAuthWithPushPinRequestHandler;
 import com.onegini.mobile.sdk.android.handlers.request.callback.OneginiPinCallback;
 import com.onegini.mobile.sdk.android.model.entity.AuthenticationAttemptCounter;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthenticationRequest;
 
-public class MobileAuthenticationPinRequestHandler implements OneginiMobileAuthenticationPinRequestHandler {
+public class MobileAuthenticationPinRequestHandler implements OneginiMobileAuthWithPushPinRequestHandler {
 
   public static OneginiPinCallback CALLBACK;
 
+  private final Context context;
   private int failedAttemptsCount;
   private int maxAttemptsCount;
   private String message;
   private String userProfileId;
-
-  private final Context context;
 
   public MobileAuthenticationPinRequestHandler(final Context context) {
     this.context = context;
@@ -50,7 +50,8 @@ public class MobileAuthenticationPinRequestHandler implements OneginiMobileAuthe
 
   @Override
   public void startAuthentication(final OneginiMobileAuthenticationRequest oneginiMobileAuthenticationRequest, final OneginiPinCallback oneginiPinCallback,
-                                  final AuthenticationAttemptCounter attemptCounter) {
+                                  final AuthenticationAttemptCounter authenticationAttemptCounter,
+                                  final OneginiMobileAuthenticationError oneginiMobileAuthenticationError) {
     CALLBACK = oneginiPinCallback;
     message = oneginiMobileAuthenticationRequest.getMessage();
     userProfileId = oneginiMobileAuthenticationRequest.getUserProfile().getProfileId();
@@ -71,6 +72,11 @@ public class MobileAuthenticationPinRequestHandler implements OneginiMobileAuthe
   }
 
   private void notifyActivity(final String command) {
+    final Intent intent = prepareActivityIntent(command);
+    context.startActivity(intent);
+  }
+
+  private Intent prepareActivityIntent(final String command) {
     final Intent intent = new Intent(context, MobileAuthenticationPinActivity.class);
     intent.putExtra(EXTRA_COMMAND, command);
     intent.putExtra(EXTRA_MESSAGE, message);
@@ -78,6 +84,6 @@ public class MobileAuthenticationPinRequestHandler implements OneginiMobileAuthe
     intent.putExtra(EXTRA_FAILED_ATTEMPTS_COUNT, failedAttemptsCount);
     intent.putExtra(EXTRA_MAX_FAILED_ATTEMPTS, maxAttemptsCount);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-    context.startActivity(intent);
+    return intent;
   }
 }

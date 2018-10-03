@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright (c) 2016-2017 Onegini B.V.
+  Copyright (c) 2016-2018 Onegini B.V.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -71,6 +71,10 @@
                     style="@style/ButtonStyle"
                     android:text="@string/btn_your_devices"
                     android:layout_marginTop="32dp"/>
+                <Button
+                    android:id="@+id/button_auth_with_otp"
+                    style="@style/ButtonStyle"
+                    android:text="@string/btn_mobile_auth_with_otp_label"/>
                 <Button
                     android:id="@+id/button_settings"
                     style="@style/ButtonStyle"

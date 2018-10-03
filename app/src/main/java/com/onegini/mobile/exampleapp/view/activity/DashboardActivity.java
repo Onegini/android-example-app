@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Onegini B.V.
+ * Copyright (c) 2016-2018 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.OneginiSDK;
@@ -31,20 +31,23 @@ import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.exampleapp.util.DeregistrationUtil;
+import com.onegini.mobile.exampleapp.view.helper.AskForOtpDialog;
 import com.onegini.mobile.sdk.android.client.OneginiClient;
 import com.onegini.mobile.sdk.android.handlers.OneginiDeregisterUserProfileHandler;
 import com.onegini.mobile.sdk.android.handlers.OneginiLogoutHandler;
+import com.onegini.mobile.sdk.android.handlers.OneginiMobileAuthWithOtpHandler;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiDeregistrationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiLogoutError;
+import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthWithOtpError;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class DashboardActivity extends AppCompatActivity {
 
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.toolbar)
+  @BindView(R.id.toolbar)
   Toolbar toolbar;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.dashboard_welcome_text)
+  @BindView(R.id.dashboard_welcome_text)
   TextView dashboardWelcomeText;
 
   private UserStorage userStorage;
@@ -60,6 +63,25 @@ public class DashboardActivity extends AppCompatActivity {
   }
 
   @SuppressWarnings("unused")
+  @OnClick(R.id.button_auth_with_otp)
+  public void mobileAuthWithOtp() {
+    final OneginiMobileAuthWithOtpHandler oneginiMobileAuthWithOtpHandler = new OneginiMobileAuthWithOtpHandler() {
+      @Override
+      public void onSuccess() {
+        showToast("Mobile auth with OTP succeeded");
+      }
+
+      @Override
+      public void onError(final OneginiMobileAuthWithOtpError oneginiMobileAuthWithOtpError) {
+        showToast("Mobile auth with OTP error:" + oneginiMobileAuthWithOtpError.getMessage());
+      }
+    };
+
+    AskForOtpDialog askForOtpDialog = new AskForOtpDialog(this, oneginiMobileAuthWithOtpHandler);
+    askForOtpDialog.show();
+  }
+
+  @SuppressWarnings("unused")
   @OnClick(R.id.button_logout)
   public void logout() {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
@@ -69,7 +91,6 @@ public class DashboardActivity extends AppCompatActivity {
           @Override
           public void onSuccess() {
             // Go to login screen
-            showToast("logoutSuccess");
             startLoginActivity();
           }
 
@@ -91,7 +112,7 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     // other errors don't really require our reaction, but you might consider displaying some message to the user
-    showToast("Logout error: " + oneginiLogoutError.getErrorDescription());
+    showToast("Logout error: " + oneginiLogoutError.getMessage());
 
     startLoginActivity();
   }
@@ -135,7 +156,7 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     // other errors don't really require our reaction, but you might consider displaying some message to the user
-    showToast("Deregistration error: " + oneginiDeregistrationError.getErrorDescription());
+    showToast("Deregistration error: " + oneginiDeregistrationError.getMessage());
 
     startLoginActivity();
   }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Onegini B.V.
+ * Copyright (c) 2016-2018 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 package com.onegini.mobile.exampleapp.model;
 
 import com.google.gson.annotations.SerializedName;
-import com.onegini.mobile.exampleapp.Constants;
 
 @SuppressWarnings("unused")
 public class ApplicationDetails {
@@ -39,9 +38,5 @@ public class ApplicationDetails {
 
   public String getApplicationVersion() {
     return applicationVersion;
-  }
-
-  public String getApplicationDetailsCombined() {
-    return getApplicationIdentifier() + Constants.NEW_LINE + getApplicationPlatform() + Constants.NEW_LINE + getApplicationVersion();
   }
 }

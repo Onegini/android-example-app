@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Onegini B.V.
+ * Copyright (c) 2016-2018 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Switch;
-import android.widget.TextView;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.AuthenticatorListItem;
 import com.onegini.mobile.exampleapp.view.activity.SettingsAuthenticatorsActivity;
@@ -63,7 +62,7 @@ public class AuthenticatorsAdapter extends
       holder.itemView.setBackgroundResource(R.color.switcher_dark);
     }
 
-    holder.nameTextView.setText(authenticator.getName());
+    holder.authenticatorSwitch.setText(authenticator.getName());
 
     if (authenticator.getType() == OneginiAuthenticator.PIN) {
       holder.authenticatorSwitch.setChecked(true);
@@ -88,13 +87,11 @@ public class AuthenticatorsAdapter extends
   }
 
   static class ViewHolder extends RecyclerView.ViewHolder {
-    final TextView nameTextView;
     final Switch authenticatorSwitch;
     final ProgressBar progressIndicator;
 
     ViewHolder(final View contactView) {
       super(contactView);
-      nameTextView = (TextView) itemView.findViewById(R.id.authenticator_name);
       authenticatorSwitch = (Switch) itemView.findViewById(R.id.authenticator_switch);
       progressIndicator = (ProgressBar) itemView.findViewById(R.id.progress_bar_authenticators);
     }

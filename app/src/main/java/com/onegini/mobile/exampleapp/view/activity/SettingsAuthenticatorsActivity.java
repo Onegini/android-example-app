@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Onegini B.V.
+ * Copyright (c) 2016-2018 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,10 @@
  */
 
 package com.onegini.mobile.exampleapp.view.activity;
+
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.onegini.mobile.exampleapp.view.helper.ErrorMessageParser.parseErrorMessage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +37,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.OneginiSDK;
@@ -48,19 +52,23 @@ import com.onegini.mobile.sdk.android.handlers.OneginiAuthenticatorRegistrationH
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticatorDeregistrationError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiAuthenticatorRegistrationError;
 import com.onegini.mobile.sdk.android.model.OneginiAuthenticator;
+import com.onegini.mobile.sdk.android.model.entity.CustomInfo;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.toolbar)
+  @BindView(R.id.toolbar)
   Toolbar toolbar;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.settings_authenticator_selector_text)
+  @BindView(R.id.settings_authenticator_selector_text)
   TextView loginMethodTextView;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.authenticators_list)
+  @BindView(R.id.authenticators_list)
   RecyclerView authenticatorsRecyclerView;
+  @SuppressWarnings({ "unused", "WeakerAccess" })
+  @BindView(R.id.result)
+  TextView resultTextView;
 
   private AuthenticatorListItem[] authenticators;
   private AuthenticatorsAdapter authenticatorsAdapter;
@@ -177,24 +185,26 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
   private void registerAuthenticator(final OneginiAuthenticator authenticator, final int position) {
     userClient.registerAuthenticator(authenticator, new OneginiAuthenticatorRegistrationHandler() {
       @Override
-      public void onSuccess() {
+      public void onSuccess(final CustomInfo customInfo) {
         authenticators[position].setIsProcessed(false);
         prepareAuthenticatorsList();
+        clearErrorMessage();
         Toast.makeText(SettingsAuthenticatorsActivity.this, "Authenticator registered", Toast.LENGTH_SHORT).show();
       }
 
       @Override
       public void onError(final OneginiAuthenticatorRegistrationError error) {
         @OneginiAuthenticatorRegistrationError.AuthenticatorRegistrationErrorType int errorType = error.getErrorType();
+        final String errorMessage = parseErrorMessage(error);
         if (errorType == OneginiAuthenticatorRegistrationError.USER_DEREGISTERED) {
           new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onUserDeregistered(authenticatedUserProfile);
-          startLoginActivity();
+          startLoginActivity(errorMessage);
         } else if (errorType == OneginiAuthenticatorRegistrationError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onDeviceDeregistered();
-          startLoginActivity();
+          startLoginActivity(errorMessage);
         }
 
-        onErrorOccurred(position, error.getErrorDescription());
+        onErrorOccurred(position, errorMessage);
       }
     });
   }
@@ -208,19 +218,23 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
           setPinAsPreferredAuthenticator();
         }
         prepareAuthenticatorsList();
+        clearErrorMessage();
         Toast.makeText(SettingsAuthenticatorsActivity.this, "Authenticator deregistered", Toast.LENGTH_SHORT).show();
       }
 
       @Override
       public void onError(final OneginiAuthenticatorDeregistrationError error) {
-        onErrorOccurred(position, error.getErrorDescription());
         @OneginiAuthenticatorDeregistrationError.AuthenticatorDeregistrationErrorType int errorType = error.getErrorType();
+        final String errorMessage = parseErrorMessage(error);
+        onErrorOccurred(position, errorMessage);
         if (errorType == OneginiAuthenticatorDeregistrationError.USER_NOT_AUTHENTICATED) {
-          startLoginActivity();
+          startLoginActivity(errorMessage);
         } else if (errorType == OneginiAuthenticatorDeregistrationError.USER_DEREGISTERED) {
           new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onUserDeregistered(authenticatedUserProfile);
+          startLoginActivity(errorMessage);
         } else if (errorType == OneginiAuthenticatorDeregistrationError.DEVICE_DEREGISTERED) {
           new DeregistrationUtil(SettingsAuthenticatorsActivity.this).onDeviceDeregistered();
+          startLoginActivity(errorMessage);
         }
       }
     });
@@ -228,7 +242,11 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
 
   private void onErrorOccurred(int position, String errorDescription) {
     authenticators[position].setIsProcessed(false);
-    Toast.makeText(SettingsAuthenticatorsActivity.this, errorDescription, Toast.LENGTH_SHORT).show();
+    resultTextView.setText(errorDescription);
+  }
+
+  private void clearErrorMessage() {
+    resultTextView.setText("");
   }
 
   private void setPinAsPreferredAuthenticator() {
@@ -260,8 +278,10 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
     }
   }
 
-  private void startLoginActivity() {
+  private void startLoginActivity(final String errorMessage) {
     final Intent intent = new Intent(this, LoginActivity.class);
+    intent.putExtra(LoginActivity.ERROR_MESSAGE_EXTRA, errorMessage);
+    intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
     startActivity(intent);
     finish();
   }

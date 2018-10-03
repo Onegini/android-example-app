@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright (c) 2016-2017 Onegini B.V.
+  Copyright (c) 2016-2018 Onegini B.V.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -61,13 +61,21 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/message"
-                android:textAlignment="center"/>
+                android:id="@+id/result"
+                android:layout_margin="16dp"
+                android:textAlignment="center"
+                android:ellipsize="end"
+                android:maxLines="4"/>
             <Button
                 android:id="@+id/button_mobile_authentication"
                 style="@style/ButtonStyle"
-                android:layout_marginTop="40dp"
                 android:text="@string/settings_mobile_enrollment_off"/>
+            <Button
+                android:id="@+id/button_mobile_authentication_push"
+                style="@style/ButtonStyle"
+                android:text="@string/settings_mobile_push_enrollment_not_available"
+                android:enabled="false"
+            />
             <Button
                 android:id="@+id/button_change_pin"
                 style="@style/ButtonStyle"

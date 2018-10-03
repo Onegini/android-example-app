@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Onegini B.V.
+ * Copyright (c) 2016-2018 Onegini B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
@@ -38,11 +39,14 @@ public abstract class AuthenticationActivity extends Activity {
   public static final String EXTRA_USER_PROFILE_ID = "user_profile_id";
 
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.welcome_user_text)
+  @BindView(R.id.welcome_user_text)
   TextView welcomeTextView;
   @SuppressWarnings({ "unused", "WeakerAccess" })
-  @Bind(R.id.authenticator_message)
+  @BindView(R.id.authenticator_message)
   TextView authenticatorMessage;
+  @SuppressWarnings({ "unused" })
+  @BindView(R.id.auth_cancel_button)
+  Button cancelButton;
 
   protected String errorMessage;
   protected String command;
@@ -62,7 +66,7 @@ public abstract class AuthenticationActivity extends Activity {
     command = extras.getString(EXTRA_COMMAND);
     if (COMMAND_FINISH.equals(command)) {
       finish();
-    } else if(COMMAND_START.equals(command)) {
+    } else if (COMMAND_START.equals(command)) {
       message = extras.getString(EXTRA_MESSAGE, "");
       errorMessage = extras.getString(EXTRA_ERROR_MESSAGE, "");
 
@@ -95,7 +99,7 @@ public abstract class AuthenticationActivity extends Activity {
   private void updateAuthenticatorMessage() {
     if (isNotBlank(message)) {
       authenticatorMessage.setText(message);
-    } else if (isBlank(authenticatorMessage.getText().toString())){
+    } else if (isBlank(authenticatorMessage.getText().toString())) {
       authenticatorMessage.setVisibility(View.INVISIBLE);
     }
   }
@@ -110,6 +114,25 @@ public abstract class AuthenticationActivity extends Activity {
 
   @Override
   public void onBackPressed() {
-    // we don't want to be able to go back from the pin screen
+    if (isCancellable()) {
+      cancelRequest();
+      super.onBackPressed();
+    }
+  }
+
+  protected boolean isCancellable() {
+    //by default we don't want to be able to go back from the pin screen,
+    //but if cancel button is visible, we want to be able to use back button as well
+    return isCancelButtonVisible();
+  }
+
+  private boolean isCancelButtonVisible() {
+    if (cancelButton == null || cancelButton.getVisibility() == View.GONE) {
+      return false;
+    }
+    return true;
+  }
+
+  protected void cancelRequest() {
   }
 }
