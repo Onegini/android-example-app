@@ -35,11 +35,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.adapter.AuthenticatorsAdapter;
@@ -55,19 +53,11 @@ import com.onegini.mobile.sdk.android.model.OneginiAuthenticator;
 import com.onegini.mobile.sdk.android.model.entity.CustomInfo;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
-public class SettingsAuthenticatorsActivity extends AppCompatActivity {
+public class SettingsAuthenticatorsActivity extends AppCompatActivity implements View.OnClickListener {
 
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.toolbar)
   Toolbar toolbar;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.settings_authenticator_selector_text)
   TextView loginMethodTextView;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.authenticators_list)
   RecyclerView authenticatorsRecyclerView;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.result)
   TextView resultTextView;
 
   private AuthenticatorListItem[] authenticators;
@@ -79,9 +69,16 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_settings_authenticators);
-    ButterKnife.bind(this);
+    initUI();
     userClient = OneginiSDK.getOneginiClient(this).getUserClient();
     authenticatedUserProfile = userClient.getAuthenticatedUserProfile();
+  }
+
+  private void initUI() {
+    toolbar = findViewById(R.id.toolbar);
+    loginMethodTextView = findViewById(R.id.settings_authenticator_selector_text);
+    authenticatorsRecyclerView = findViewById(R.id.authenticators_list);
+    resultTextView = findViewById(R.id.result);
   }
 
   @Override
@@ -101,8 +98,6 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
     return super.onOptionsItemSelected(item);
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.settings_authenticator_selector)
   public void onChangePreferredAuthenticatorClick() {
     final Set<OneginiAuthenticator> registeredAuthenticators = userClient.getRegisteredAuthenticators(authenticatedUserProfile);
 
@@ -258,6 +253,21 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
     }
   }
 
+  @Override
+  public void onClick(final View view) {
+    if (R.id.settings_authenticator_selector == view.getId()) {
+      onChangePreferredAuthenticatorClick();
+    }
+  }
+
+  private void startLoginActivity(final String errorMessage) {
+    final Intent intent = new Intent(this, LoginActivity.class);
+    intent.putExtra(LoginActivity.ERROR_MESSAGE_EXTRA, errorMessage);
+    intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
+    startActivity(intent);
+    finish();
+  }
+
   public class AuthenticatorClickListener {
 
     public void onAuthenticatorItemClick(final int position) {
@@ -276,13 +286,5 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity {
         registerAuthenticator(clickedAuthenticatorItem.getAuthenticator(), position);
       }
     }
-  }
-
-  private void startLoginActivity(final String errorMessage) {
-    final Intent intent = new Intent(this, LoginActivity.class);
-    intent.putExtra(LoginActivity.ERROR_MESSAGE_EXTRA, errorMessage);
-    intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
-    startActivity(intent);
-    finish();
   }
 }

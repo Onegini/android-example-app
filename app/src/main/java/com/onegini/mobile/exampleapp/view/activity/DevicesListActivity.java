@@ -27,8 +27,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.adapter.DevicesAdapter;
 import com.onegini.mobile.exampleapp.model.Device;
@@ -38,14 +36,8 @@ import io.reactivex.disposables.Disposable;
 
 public class DevicesListActivity extends AppCompatActivity {
 
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.toolbar)
   Toolbar toolbar;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.recycler_view)
   RecyclerView recyclerView;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.progress_bar)
   ProgressBar progressBar;
 
   private Disposable disposable;
@@ -54,9 +46,15 @@ public class DevicesListActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_devices_list);
-    ButterKnife.bind(this);
+    initUI();
     setupActionBar();
     fetchUserDevices();
+  }
+
+  private void initUI() {
+    toolbar = findViewById(R.id.toolbar);
+    recyclerView = findViewById(R.id.recycler_view);
+    progressBar = findViewById(R.id.progress_bar);
   }
 
   private void fetchUserDevices() {

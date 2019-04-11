@@ -12,8 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.ApplicationDetails;
@@ -33,34 +31,15 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public class InfoActivity extends AppCompatActivity {
 
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.toolbar)
   Toolbar toolbar;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.user_profile_id)
   TextView userProfileId;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.user_profile_name)
   TextView userProfileName;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.implicit_details)
   TextView implicitDetails;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.device_details)
   RelativeLayout deviceDetails;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.application_id)
   TextView applicationId;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.application_version)
   TextView applicationVersion;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.platform)
   TextView platform;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.device_details_fetch_failed)
   TextView deviceDetailsFetchFailed;
-  @BindView(R.id.bottom_navigation)
   BottomNavigationView bottomNavigationView;
 
 
@@ -70,8 +49,22 @@ public class InfoActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_info);
-    ButterKnife.bind(this);
+    initUI();
     setupUi();
+  }
+
+  private void initUI() {
+    toolbar = findViewById(R.id.toolbar);
+    userProfileId = findViewById(R.id.user_profile_id);
+    userProfileName = findViewById(R.id.user_profile_name);
+    implicitDetails = findViewById(R.id.implicit_details);
+    deviceDetails = findViewById(R.id.device_details);
+    applicationId = findViewById(R.id.application_id);
+    applicationVersion = findViewById(R.id.application_version);
+    platform = findViewById(R.id.platform);
+    deviceDetailsFetchFailed = findViewById(R.id.device_details_fetch_failed);
+    bottomNavigationView = findViewById(R.id.bottom_navigation);
+
   }
 
   @Override

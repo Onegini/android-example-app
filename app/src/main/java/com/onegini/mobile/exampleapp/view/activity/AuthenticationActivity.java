@@ -27,7 +27,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import butterknife.BindView;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.storage.UserStorage;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
@@ -38,20 +37,26 @@ public abstract class AuthenticationActivity extends Activity {
   public static final String EXTRA_ERROR_MESSAGE = "error_message";
   public static final String EXTRA_USER_PROFILE_ID = "user_profile_id";
 
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.welcome_user_text)
   TextView welcomeTextView;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.authenticator_message)
   TextView authenticatorMessage;
-  @SuppressWarnings({ "unused" })
-  @BindView(R.id.auth_cancel_button)
   Button cancelButton;
 
   protected String errorMessage;
   protected String command;
   private String message;
   private String userName;
+
+  @Override
+  protected void onCreate(final Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    initUI();
+  }
+
+  private void initUI() {
+    welcomeTextView = findViewById(R.id.welcome_user_text);
+    authenticatorMessage = findViewById(R.id.authenticator_message);
+    cancelButton = findViewById(R.id.auth_cancel_button);
+  }
 
   protected abstract void initialize();
 

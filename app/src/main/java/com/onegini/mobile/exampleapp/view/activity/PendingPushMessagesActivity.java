@@ -30,8 +30,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.adapter.PendingPushMessagesAdapter;
@@ -43,17 +41,10 @@ import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
 public class PendingPushMessagesActivity extends AppCompatActivity {
 
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.toolbar)
   Toolbar toolbar;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.recycler_view)
   RecyclerView recyclerView;
-  @BindView(R.id.pending_notifications_error)
   TextView errorTextView;
-  @BindView(R.id.bottom_navigation)
   BottomNavigationView bottomNavigationView;
-  @BindView(R.id.notifications_refresh_layout)
   SwipeRefreshLayout swipeRefreshLayout;
 
   private PendingPushMessagesAdapter adapter;
@@ -62,8 +53,16 @@ public class PendingPushMessagesActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_pending_notifications);
-    ButterKnife.bind(this);
+    initUI();
     setupUi();
+  }
+
+  private void initUI() {
+    toolbar = findViewById(R.id.toolbar);
+    recyclerView = findViewById(R.id.recycler_view);
+    errorTextView = findViewById(R.id.pending_notifications_error);
+    bottomNavigationView = findViewById(R.id.bottom_navigation);
+    swipeRefreshLayout = findViewById(R.id.notifications_refresh_layout);
   }
 
   @Override

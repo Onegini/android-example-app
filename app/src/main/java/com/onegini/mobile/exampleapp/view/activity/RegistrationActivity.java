@@ -29,9 +29,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.Constants;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
@@ -47,25 +44,13 @@ import com.onegini.mobile.sdk.android.model.OneginiIdentityProvider;
 import com.onegini.mobile.sdk.android.model.entity.CustomInfo;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
-public class RegistrationActivity extends Activity {
+public class RegistrationActivity extends Activity implements View.OnClickListener {
 
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.name_edit_text)
   EditText nameEditText;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.create_profile_button)
   Button createProfileButton;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.cancel_registration_button)
   Button cancelRegistrationButton;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.progress_bar_register)
   ProgressBar progressBar;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.layout_register_content)
   LinearLayout layoutRegisterContent;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.user_profile_debug)
   TextView userProfileDebugText;
 
   public static final String IDENTITY_PROVIDER_EXTRA = "identity_provider_id";
@@ -91,11 +76,20 @@ public class RegistrationActivity extends Activity {
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_registration);
-    ButterKnife.bind(this);
+    initUI();
 
     setupUserInterface();
     final OneginiIdentityProvider oneginiIdentityProvider = getIntent().getParcelableExtra(IDENTITY_PROVIDER_EXTRA);
     registerUser(oneginiIdentityProvider);
+  }
+
+  private void initUI() {
+    nameEditText = findViewById(R.id.name_edit_text);
+    createProfileButton = findViewById(R.id.create_profile_button);
+    cancelRegistrationButton = findViewById(R.id.cancel_registration_button);
+    progressBar = findViewById(R.id.progress_bar_register);
+    layoutRegisterContent = findViewById(R.id.layout_register_content);
+    userProfileDebugText = findViewById(R.id.user_profile_debug);
   }
 
   private void setupUserInterface() {
@@ -189,15 +183,11 @@ public class RegistrationActivity extends Activity {
     layoutRegisterContent.setVisibility(View.VISIBLE);
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.create_profile_button)
   public void onCreateProfileClick() {
     storeUserProfile();
     startDashboardActivity();
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.cancel_registration_button)
   public void onCancelRegistrationButton() {
     RegistrationRequestHandler.onRegistrationCanceled();
   }
@@ -217,6 +207,15 @@ public class RegistrationActivity extends Activity {
     final Intent intent = new Intent(this, DashboardActivity.class);
     startActivity(intent);
     finish();
+  }
+
+  @Override
+  public void onClick(final View view) {
+    if (R.id.create_profile_button == view.getId()) {
+      onCreateProfileClick();
+    } else if (R.id.cancel_registration_button == view.getId()) {
+      onCancelRegistrationButton();
+    }
   }
 
   private class ProfileNameChangeListener implements TextWatcher {

@@ -23,24 +23,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.handler.CreatePinRequestHandler;
 import com.onegini.mobile.exampleapp.view.handler.PinAuthenticationRequestHandler;
 import com.onegini.mobile.exampleapp.view.helper.PinInputFields;
 import com.onegini.mobile.exampleapp.view.helper.PinKeyboard;
 
-public class PinActivity extends AuthenticationActivity {
+public class PinActivity extends AuthenticationActivity implements View.OnClickListener {
 
   public static final String EXTRA_FAILED_ATTEMPTS_COUNT = "failed_attempts";
   public static final String EXTRA_MAX_FAILED_ATTEMPTS = "max_failed_attempts";
 
   protected static final int MAX_DIGITS = 5;
 
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.pin_error_message)
   TextView errorTextView;
 
 
@@ -62,7 +57,7 @@ public class PinActivity extends AuthenticationActivity {
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_pin);
-    ButterKnife.bind(this);
+    errorTextView = findViewById(R.id.pin_error_message);
 
     initialize();
   }
@@ -158,8 +153,6 @@ public class PinActivity extends AuthenticationActivity {
     }
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.auth_cancel_button)
   public void onCancelClicked() {
     cancelRequest();
   }
@@ -170,6 +163,13 @@ public class PinActivity extends AuthenticationActivity {
       CreatePinRequestHandler.CALLBACK.pinCancelled();
     } else {
       PinAuthenticationRequestHandler.CALLBACK.denyAuthenticationRequest();
+    }
+  }
+
+  @Override
+  public void onClick(final View view) {
+    if (R.id.auth_cancel_button == view.getId()) {
+      onCancelClicked();
     }
   }
 }

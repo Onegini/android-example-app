@@ -17,35 +17,32 @@ package com.onegini.mobile.exampleapp.view.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.action.twowayotpidentityprovider.TwoWayOtpRegistrationAction;
 
-public class TwoWayOtpRegistrationActivity extends AppCompatActivity {
+public class TwoWayOtpRegistrationActivity extends AppCompatActivity implements View.OnClickListener {
 
   public static final String OTP_CHALLENGE_EXTRA = "otp_challenge_extra";
 
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.two_way_otp_response_code)
   EditText responseCodeEditText;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.two_way_otp_challenge_code)
   TextView challengeCodeTextView;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_two_way_otp_registration);
-    ButterKnife.bind(this);
+    initUI();
     initChallengeCode();
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.two_way_otp_ok_button)
+  private void initUI() {
+    responseCodeEditText = findViewById(R.id.two_way_otp_response_code);
+    challengeCodeTextView = findViewById(R.id.two_way_otp_challenge_code);
+  }
+
   public void onOkButtonClicked() {
     if (TwoWayOtpRegistrationAction.CALLBACK != null) {
       final String responseCode = responseCodeEditText.getText().toString();
@@ -54,8 +51,6 @@ public class TwoWayOtpRegistrationActivity extends AppCompatActivity {
     finish();
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.two_way_otp_cancel_button)
   public void onCancelButtonClicked() {
     if (TwoWayOtpRegistrationAction.CALLBACK != null) {
       TwoWayOtpRegistrationAction.CALLBACK.returnError(new Exception("Registration canceled"));
@@ -66,5 +61,14 @@ public class TwoWayOtpRegistrationActivity extends AppCompatActivity {
   private void initChallengeCode() {
     final String challengeCode = getIntent().getStringExtra(OTP_CHALLENGE_EXTRA);
     challengeCodeTextView.setText(challengeCode);
+  }
+
+  @Override
+  public void onClick(final View view) {
+    if (R.id.two_way_otp_ok_button == view.getId()) {
+      onOkButtonClicked();
+    } else if (R.id.two_way_otp_cancel_button == view.getId()) {
+      onCancelButtonClicked();
+    }
   }
 }

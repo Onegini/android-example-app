@@ -33,17 +33,13 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.SwitchCompat;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
-import butterknife.OnClick;
-import butterknife.OnItemSelected;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
@@ -63,33 +59,16 @@ import com.onegini.mobile.sdk.android.model.entity.CustomInfo;
 import com.onegini.mobile.sdk.android.model.entity.OneginiMobileAuthWithPushRequest;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends Activity implements View.OnClickListener {
 
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.label)
   TextView label;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.users_spinner)
   Spinner usersSpinner;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.login_button)
   Button loginButton;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.register_button)
   Button registerButton;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.progress_bar_login)
   ProgressBar progressBar;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.layout_login_content)
   RelativeLayout layoutLoginContent;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.login_with_preferred_authenticator)
   SwitchCompat usePreferredAuthenticatorSwitchCompat;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.register_with_preferred_identity_provider)
   SwitchCompat usePreferredIdentityProviderSwitchCompat;
-  @BindView(R.id.bottom_navigation)
   BottomNavigationView bottomNavigationView;
 
   public static final String ERROR_MESSAGE_EXTRA = "error_message";
@@ -105,7 +84,33 @@ public class LoginActivity extends Activity {
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
-    ButterKnife.bind(this);
+    initUI();
+  }
+
+  private void initUI() {
+    label = findViewById(R.id.label);
+    usersSpinner = findViewById(R.id.users_spinner);
+    loginButton = findViewById(R.id.login_button);
+    registerButton = findViewById(R.id.register_button);
+    progressBar = findViewById(R.id.progress_bar_login);
+    layoutLoginContent = findViewById(R.id.layout_login_content);
+    usePreferredAuthenticatorSwitchCompat = findViewById(R.id.login_with_preferred_authenticator);
+    usePreferredIdentityProviderSwitchCompat = findViewById(R.id.register_with_preferred_identity_provider);
+    bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+    usePreferredAuthenticatorSwitchCompat.setOnCheckedChangeListener((compoundButton, b) -> usePreferredAuthenticatorSwitchStateChanged());
+    usePreferredIdentityProviderSwitchCompat.setOnCheckedChangeListener((compoundButton, b) -> setUsePreferredIdentityProviderSwitchStateChanged());
+    usersSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+      @Override
+      public void onItemSelected(final AdapterView<?> adapterView, final View view, final int position, final long id) {
+        LoginActivity.this.onItemSelected(position);
+      }
+
+      @Override
+      public void onNothingSelected(final AdapterView<?> adapterView) {
+
+      }
+    });
   }
 
   @Override
@@ -133,8 +138,6 @@ public class LoginActivity extends Activity {
     }
   }
 
-  @SuppressWarnings("unused")
-  @OnCheckedChanged(R.id.login_with_preferred_authenticator)
   public void usePreferredAuthenticatorSwitchStateChanged() {
     if (usePreferredAuthenticatorSwitchCompat.isChecked()) {
       loginButton.setText(getString(R.string.btn_login_label));
@@ -143,8 +146,6 @@ public class LoginActivity extends Activity {
     }
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.login_button)
   public void loginButtonClicked() {
     if (usePreferredAuthenticatorSwitchCompat.isChecked()) {
       authenticate(selectedUser.getUserProfile(), null);
@@ -153,8 +154,6 @@ public class LoginActivity extends Activity {
     }
   }
 
-  @SuppressWarnings("unused")
-  @OnCheckedChanged(R.id.register_with_preferred_identity_provider)
   public void setUsePreferredIdentityProviderSwitchStateChanged() {
     if (usePreferredIdentityProviderSwitchCompat.isChecked()) {
       registerButton.setText(getString(R.string.btn_register_label));
@@ -175,8 +174,6 @@ public class LoginActivity extends Activity {
     menu.setOnClickListener(this::registerUser).show();
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.register_button)
   public void registerButtonClicked() {
     if(usePreferredIdentityProviderSwitchCompat.isChecked()) {
       registerUser(null);
@@ -194,8 +191,6 @@ public class LoginActivity extends Activity {
     finish();
   }
 
-  @SuppressWarnings("unused")
-  @OnItemSelected(R.id.users_spinner)
   void onItemSelected(int position) {
     selectedUser = listOfUsers.get(position);
   }
@@ -417,5 +412,14 @@ public class LoginActivity extends Activity {
 
   private boolean isErrorMessagePending() {
     return !isNoErrorMessagePending();
+  }
+
+  @Override
+  public void onClick(final View view) {
+    if (R.id.login_button == view.getId()) {
+      loginButtonClicked();
+    } else if (R.id.register_button == view.getId()) {
+      registerButtonClicked();
+    }
   }
 }

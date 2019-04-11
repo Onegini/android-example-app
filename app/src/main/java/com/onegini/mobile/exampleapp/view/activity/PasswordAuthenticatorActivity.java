@@ -18,37 +18,42 @@ package com.onegini.mobile.exampleapp.view.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.EditText;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
 
-public abstract class PasswordAuthenticatorActivity extends AppCompatActivity {
+public abstract class PasswordAuthenticatorActivity extends AppCompatActivity implements View.OnClickListener {
 
-  @SuppressWarnings({ "unused" })
-  @BindView(R.id.custom_auth_password)
   EditText passwordEditText;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_password_authenticator);
-    ButterKnife.bind(this);
+    initUI();
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.custom_auth_password_send)
+  private void initUI() {
+   passwordEditText = findViewById(R.id.custom_auth_password);
+  }
+
   public void onPositiveButtonClicked() {
     onSuccess(passwordEditText.getText().toString());
     finish();
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.custom_auth_password_cancel)
   public void onNegativeButtonClicked() {
     onCanceled();
     finish();
+  }
+
+  @Override
+  public void onClick(final View view) {
+    if (R.id.custom_auth_password_send == view.getId()) {
+      onPositiveButtonClicked();
+    } else if (R.id.custom_auth_password_cancel == view.getId()) {
+      onNegativeButtonClicked();
+    }
   }
 
   @Override

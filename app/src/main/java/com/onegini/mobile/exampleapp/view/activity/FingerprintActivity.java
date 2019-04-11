@@ -25,31 +25,31 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.util.AnimationUtils;
 import com.onegini.mobile.exampleapp.view.handler.FingerprintAuthenticationRequestHandler;
 
-public class FingerprintActivity extends AuthenticationActivity {
+public class FingerprintActivity extends AuthenticationActivity implements View.OnClickListener {
 
-  @BindView(R.id.action_text)
   TextView actionTextView;
-  @BindView(R.id.content_fingerprint)
   LinearLayout layoutFingerprint;
-  @BindView(R.id.content_accept_deny)
   LinearLayout layoutAcceptDeny;
-  @BindView(R.id.fallback_to_pin_button)
   Button fallbackToPinButton;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_fingerprint);
-    ButterKnife.bind(this);
+    initUI();
 
     initialize();
+  }
+
+  private void initUI() {
+    actionTextView = findViewById(R.id.action_text);
+    layoutFingerprint = findViewById(R.id.content_fingerprint);
+    layoutAcceptDeny = findViewById(R.id.content_accept_deny);
+    fallbackToPinButton = findViewById(R.id.fallback_to_pin_button);
   }
 
   @Override
@@ -77,8 +77,6 @@ public class FingerprintActivity extends AuthenticationActivity {
     }
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.fallback_to_pin_button)
   public void onFallbackToPinButtonClick() {
     if (FingerprintAuthenticationRequestHandler.CALLBACK != null) {
       FingerprintAuthenticationRequestHandler.CALLBACK.fallbackToPin();
@@ -92,17 +90,24 @@ public class FingerprintActivity extends AuthenticationActivity {
     fallbackToPinButton.setVisibility(isVisible ? View.GONE : View.VISIBLE);
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.auth_cancel_button)
   public void onCancelClicked() {
     cancelRequest();
   }
 
   @Override
   protected void cancelRequest() {
-    if(FingerprintAuthenticationRequestHandler.CALLBACK != null) {
+    if (FingerprintAuthenticationRequestHandler.CALLBACK != null) {
       FingerprintAuthenticationRequestHandler.CALLBACK.denyAuthenticationRequest();
       finish();
+    }
+  }
+
+  @Override
+  public void onClick(final View view) {
+    if (R.id.fallback_to_pin_button == view.getId()) {
+      onFallbackToPinButtonClick();
+    } else if (R.id.auth_cancel_button == view.getId()) {
+      onCancelClicked();
     }
   }
 }

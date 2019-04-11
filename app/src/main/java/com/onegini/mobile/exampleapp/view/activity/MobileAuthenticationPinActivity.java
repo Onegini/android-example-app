@@ -18,20 +18,22 @@ package com.onegini.mobile.exampleapp.view.activity;
 
 import android.view.View;
 import android.widget.Button;
-import butterknife.BindView;
-import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationPinRequestHandler;
 
-public class MobileAuthenticationPinActivity extends PinActivity {
+public class MobileAuthenticationPinActivity extends PinActivity implements View.OnClickListener {
 
-  @BindView(R.id.auth_deny_button)
   Button denyButton;
 
   @Override
   protected void initialize() {
     super.initialize();
+    initUI();
     initDenyButton();
+  }
+
+  private void initUI() {
+    denyButton = findViewById(R.id.auth_deny_button);
   }
 
   @Override
@@ -63,11 +65,17 @@ public class MobileAuthenticationPinActivity extends PinActivity {
     denyButton.setVisibility(View.VISIBLE);
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.auth_deny_button)
   public void onDenyClicked() {
     if (MobileAuthenticationPinRequestHandler.CALLBACK != null) {
       MobileAuthenticationPinRequestHandler.CALLBACK.denyAuthenticationRequest();
+    }
+  }
+
+  @Override
+  public void onClick(final View view) {
+    super.onClick(view);
+    if (R.id.auth_deny_button == view.getId()) {
+      onDenyClicked();
     }
   }
 

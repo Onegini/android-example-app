@@ -16,10 +16,8 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.Button;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -28,17 +26,13 @@ import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.action.qrcodeidentityprovider.QrCodeRegistrationAction;
 import com.onegini.mobile.exampleapp.view.helper.AlertDialogFragment;
 
-public class QrCodeScanActivity extends AppCompatActivity {
+public class QrCodeScanActivity extends AppCompatActivity implements View.OnClickListener {
 
   private static final String TAG = QrCodeScanActivity.class.getSimpleName();
 
   private static final int CAMERA_PERMISSION_REQUEST_CODE = 12345;
 
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.qr_code_scanner)
   SurfaceView qrCodeScanner;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.qr_code_cancel_button)
   Button cancelButton;
 
   private CameraSource cameraSource;
@@ -47,8 +41,13 @@ public class QrCodeScanActivity extends AppCompatActivity {
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_qr_code_registration);
-    ButterKnife.bind(this);
+    initUI();
     initQrCodeScanner();
+  }
+
+  private void initUI() {
+    qrCodeScanner = findViewById(R.id.qr_code_scanner);
+    cancelButton = findViewById(R.id.qr_code_cancel_button);
   }
 
   private void initQrCodeScanner() {
@@ -95,8 +94,6 @@ public class QrCodeScanActivity extends AppCompatActivity {
     }
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.qr_code_cancel_button)
   public void onCancelButtonClicked() {
     onScanningCanceled(new Exception("Registration canceled"));
   }
@@ -131,6 +128,13 @@ public class QrCodeScanActivity extends AppCompatActivity {
     super.onDestroy();
     cameraSource.stop();
     cameraSource.release();
+  }
+
+  @Override
+  public void onClick(final View view) {
+    if (R.id.qr_code_cancel_button == view.getId()) {
+      onCancelButtonClicked();
+    }
   }
 
   private class QrCodeDetectorProcessor implements Detector.Processor<Barcode> {

@@ -21,12 +21,9 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.OneginiSDK;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.model.User;
@@ -41,15 +38,11 @@ import com.onegini.mobile.sdk.android.handlers.error.OneginiLogoutError;
 import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthWithOtpError;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
 
   private static final int QR_LOGIN_REQUEST_CODE = 24;
 
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.toolbar)
   Toolbar toolbar;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.dashboard_welcome_text)
   TextView dashboardWelcomeText;
 
   private UserStorage userStorage;
@@ -58,10 +51,15 @@ public class DashboardActivity extends AppCompatActivity {
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_dashboard);
-    ButterKnife.bind(this);
+    initUI();
 
     userStorage = new UserStorage(this);
     setupUserInterface();
+  }
+
+  private void initUI() {
+    toolbar = findViewById(R.id.toolbar);
+    dashboardWelcomeText = findViewById(R.id.dashboard_welcome_text);
   }
 
   @Override
@@ -87,16 +85,11 @@ public class DashboardActivity extends AppCompatActivity {
     }
   }
 
-
-  @SuppressWarnings("unused")
-  @OnClick(R.id.button_auth_with_otp)
   public void mobileAuthWithOtp() {
     final Intent intent = new Intent(this, QrCodeScanActivity.class);
     startActivityForResult(intent, QR_LOGIN_REQUEST_CODE);
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.button_logout)
   public void logout() {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
     final UserProfile userProfile = oneginiClient.getUserClient().getAuthenticatedUserProfile();
@@ -131,8 +124,6 @@ public class DashboardActivity extends AppCompatActivity {
     startLoginActivity();
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.button_deregister_user)
   public void deregisterUser() {
     final OneginiClient oneginiClient = OneginiSDK.getOneginiClient(this);
     final UserProfile userProfile = oneginiClient.getUserClient().getAuthenticatedUserProfile();
@@ -175,14 +166,10 @@ public class DashboardActivity extends AppCompatActivity {
     startLoginActivity();
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.button_your_devices)
   public void startDevicesActivity() {
     startActivity(new Intent(this, DevicesListActivity.class));
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.button_settings)
   public void startSettingsActivity() {
     startActivity(new Intent(this, SettingsActivity.class));
   }
@@ -219,5 +206,20 @@ public class DashboardActivity extends AppCompatActivity {
     final Intent intent = new Intent(this, LoginActivity.class);
     startActivity(intent);
     finish();
+  }
+
+  @Override
+  public void onClick(final View view) {
+    if (R.id.button_auth_with_otp == view.getId()) {
+      mobileAuthWithOtp();
+    } else if (R.id.button_logout == view.getId()) {
+      logout();
+    } else if (R.id.button_deregister_user == view.getId()) {
+      deregisterUser();
+    } else if (R.id.button_your_devices == view.getId()) {
+      startDevicesActivity();
+    } else if (R.id.button_settings == view.getId()) {
+      startSettingsActivity();
+    }
   }
 }

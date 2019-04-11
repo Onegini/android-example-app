@@ -18,55 +18,57 @@ package com.onegini.mobile.exampleapp.view.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import com.onegini.mobile.exampleapp.R;
 
-public abstract class BasicAuthenticatorActivity extends AppCompatActivity {
+public abstract class BasicAuthenticatorActivity extends AppCompatActivity implements View.OnClickListener {
 
-  @SuppressWarnings({ "unused" })
-  @BindView(R.id.title_text)
   TextView titleText;
-  @SuppressWarnings({ "unused" })
-  @BindView(R.id.custom_auth_positive_button)
   Button positiveButton;
-  @SuppressWarnings({ "unused" })
-  @BindView(R.id.custom_auth_negative_button)
   Button negativeButton;
-  @SuppressWarnings({ "unused" })
-  @BindView(R.id.custom_auth_error_button)
   Button errorButton;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_basic_authenticator);
-    ButterKnife.bind(this);
+    initUI();
     setTitle();
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.custom_auth_positive_button)
+  private void initUI() {
+    titleText = findViewById(R.id.title_text);
+    positiveButton = findViewById(R.id.custom_auth_positive_button);
+    negativeButton = findViewById(R.id.custom_auth_negative_button);
+    errorButton = findViewById(R.id.custom_auth_error_button);
+  }
+
   public void onPositiveButtonClicked() {
     onSuccess();
     finish();
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.custom_auth_negative_button)
   public void onNegativeButtonClicked() {
     onFailure();
     finish();
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.custom_auth_error_button)
   public void onErrorButtonClicked() {
     onError();
     finish();
+  }
+
+  @Override
+  public void onClick(final View view) {
+    if (R.id.custom_auth_positive_button == view.getId()) {
+      onPositiveButtonClicked();
+    } else if (R.id.custom_auth_negative_button == view.getId()) {
+      onNegativeButtonClicked();
+    } else if (R.id.custom_auth_error_button == view.getId()) {
+      onErrorButtonClicked();
+    }
   }
 
   @Override

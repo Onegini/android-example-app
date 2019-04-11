@@ -27,11 +27,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.onegini.mobile.exampleapp.OneginiSDK;
@@ -46,26 +44,14 @@ import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthEnrollment
 import com.onegini.mobile.sdk.android.handlers.error.OneginiMobileAuthWithPushEnrollmentError;
 import com.onegini.mobile.sdk.android.model.entity.UserProfile;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
 
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.toolbar)
   Toolbar toolbar;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.button_mobile_authentication)
   Button mobileAuthButton;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.button_mobile_authentication_push)
   Button mobileAuthPushButton;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.button_change_pin)
   Button changePinButton;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
-  @BindView(R.id.button_change_authentication)
   Button changeAuthentication;
-  @BindView(R.id.result)
   TextView resultTextView;
-  @SuppressWarnings({ "unused", "WeakerAccess" })
 
   private UserProfile authenticatedUserProfile;
 
@@ -73,9 +59,18 @@ public class SettingsActivity extends AppCompatActivity {
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_settings);
-    ButterKnife.bind(this);
+    initUI();
 
     authenticatedUserProfile = OneginiSDK.getOneginiClient(this).getUserClient().getAuthenticatedUserProfile();
+  }
+
+  private void initUI() {
+    toolbar = findViewById(R.id.toolbar);
+    mobileAuthButton = findViewById(R.id.button_mobile_authentication);
+    mobileAuthPushButton = findViewById(R.id.button_mobile_authentication_push);
+    changePinButton = findViewById(R.id.button_change_pin);
+    changeAuthentication = findViewById(R.id.button_change_authentication);
+    resultTextView = findViewById(R.id.result);
   }
 
   @Override
@@ -123,8 +118,6 @@ public class SettingsActivity extends AppCompatActivity {
     }
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.button_mobile_authentication)
   public void enrollMobileAuthentication() {
     final OneginiMobileAuthEnrollmentHandler mobileAuthEnrollmentHandler = new OneginiMobileAuthEnrollmentHandler() {
       @Override
@@ -150,8 +143,6 @@ public class SettingsActivity extends AppCompatActivity {
     OneginiSDK.getOneginiClient(this).getUserClient().enrollUserForMobileAuth(mobileAuthEnrollmentHandler);
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.button_mobile_authentication_push)
   public void enrollMobileAuthenticationWithPush() {
     final FCMRegistrationService.PushEnrollmentHandler mobileAuthWithPushEnrollmentHandler = new FCMRegistrationService.PushEnrollmentHandler() {
 
@@ -181,8 +172,6 @@ public class SettingsActivity extends AppCompatActivity {
     fcmRegistrationService.enrollForPush(mobileAuthWithPushEnrollmentHandler);
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.button_change_pin)
   public void startChangePinFlow() {
     OneginiSDK.getOneginiClient(this).getUserClient().changePin(new OneginiChangePinHandler() {
       @Override
@@ -206,8 +195,6 @@ public class SettingsActivity extends AppCompatActivity {
     });
   }
 
-  @SuppressWarnings("unused")
-  @OnClick(R.id.button_change_authentication)
   public void changeAuthentication() {
     startActivity(new Intent(this, SettingsAuthenticatorsActivity.class));
   }
@@ -229,5 +216,18 @@ public class SettingsActivity extends AppCompatActivity {
     intent.putExtra(LoginActivity.ERROR_MESSAGE_EXTRA, errorMessage);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
     startActivity(intent);
+  }
+
+  @Override
+  public void onClick(final View view) {
+    if (R.id.button_change_authentication == view.getId()) {
+      changeAuthentication();
+    } else if (R.id.button_change_pin == view.getId()) {
+     startChangePinFlow();
+    } else if (R.id.button_mobile_authentication_push == view.getId()) {
+      enrollMobileAuthenticationWithPush();
+    } else if (R.id.button_mobile_authentication == view.getId()) {
+      enrollMobileAuthentication();
+    }
   }
 }
