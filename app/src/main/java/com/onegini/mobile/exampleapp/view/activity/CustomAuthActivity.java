@@ -23,6 +23,7 @@ import com.onegini.mobile.exampleapp.view.handler.BasicCustomAuthenticationReque
 
 public class CustomAuthActivity extends AuthenticationActivity implements View.OnClickListener {
 
+
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

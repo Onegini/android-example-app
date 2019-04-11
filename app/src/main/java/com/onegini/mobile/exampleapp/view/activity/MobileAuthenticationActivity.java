@@ -18,16 +18,22 @@ package com.onegini.mobile.exampleapp.view.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationRequestHandler;
 
 public class MobileAuthenticationActivity extends AuthenticationActivity implements View.OnClickListener {
 
+  Button authAcceptButton;
+
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_push_simple);
+    authAcceptButton = findViewById(R.id.auth_accept_button);
 
+    authAcceptButton.setOnClickListener(this);
+    cancelButton.setOnClickListener(this);
     initialize();
   }
 

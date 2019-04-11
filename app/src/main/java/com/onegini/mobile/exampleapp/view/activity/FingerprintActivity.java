@@ -50,6 +50,8 @@ public class FingerprintActivity extends AuthenticationActivity implements View.
     layoutFingerprint = findViewById(R.id.content_fingerprint);
     layoutAcceptDeny = findViewById(R.id.content_accept_deny);
     fallbackToPinButton = findViewById(R.id.fallback_to_pin_button);
+
+    fallbackToPinButton.setOnClickListener(this);
   }
 
   @Override

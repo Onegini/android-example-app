@@ -19,12 +19,15 @@ package com.onegini.mobile.exampleapp.view.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import com.onegini.mobile.exampleapp.R;
 
 public abstract class PasswordAuthenticatorActivity extends AppCompatActivity implements View.OnClickListener {
 
   EditText passwordEditText;
+  Button customAuthPasswordSend;
+  Button customAuthPasswordCancel;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -35,6 +38,11 @@ public abstract class PasswordAuthenticatorActivity extends AppCompatActivity im
 
   private void initUI() {
    passwordEditText = findViewById(R.id.custom_auth_password);
+   customAuthPasswordSend = findViewById(R.id.custom_auth_password_send);
+   customAuthPasswordCancel = findViewById(R.id.custom_auth_password_cancel);
+
+   customAuthPasswordSend.setOnClickListener(this);
+   customAuthPasswordCancel.setOnClickListener(this);
   }
 
   public void onPositiveButtonClicked() {

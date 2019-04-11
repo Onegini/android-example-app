@@ -16,11 +16,29 @@
 
 package com.onegini.mobile.exampleapp.view.activity;
 
+import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationBasicCustomRequestHandler;
 
 public class MobileAuthenticationCustomActivity extends CustomAuthActivity implements View.OnClickListener {
+
+  Button authAcceptButton;
+  Button authDenyButton;
+  Button fallbackToPinButton;
+
+  @Override
+  protected void onCreate(final Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    fallbackToPinButton = findViewById(R.id.fallback_to_pin_button);
+    authAcceptButton = findViewById(R.id.auth_accept_button);
+    authDenyButton = findViewById(R.id.auth_deny_button);
+
+    fallbackToPinButton.setOnClickListener(this);
+    authAcceptButton.setOnClickListener(this);
+    authDenyButton.setOnClickListener(this);
+  }
 
   public void onAcceptClicked() {
     if (MobileAuthenticationBasicCustomRequestHandler.CALLBACK != null) {

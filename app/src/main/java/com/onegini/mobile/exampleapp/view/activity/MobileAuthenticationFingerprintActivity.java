@@ -18,11 +18,29 @@ package com.onegini.mobile.exampleapp.view.activity;
 
 import static com.onegini.mobile.exampleapp.Constants.COMMAND_ASK_TO_ACCEPT_OR_DENY;
 
+import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import com.onegini.mobile.exampleapp.R;
 import com.onegini.mobile.exampleapp.view.handler.MobileAuthenticationFingerprintRequestHandler;
 
 public class MobileAuthenticationFingerprintActivity extends FingerprintActivity implements View.OnClickListener {
+
+  Button fallbackToPinButton;
+  Button authAcceptButton;
+  Button authDenyButton;
+
+  @Override
+  protected void onCreate(final Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    fallbackToPinButton = findViewById(R.id.fallback_to_pin_button);
+    authAcceptButton = findViewById(R.id.auth_accept_button);
+    authDenyButton = findViewById(R.id.auth_deny_button);
+
+    fallbackToPinButton.setOnClickListener(this);
+    authAcceptButton.setOnClickListener(this);
+    authDenyButton.setOnClickListener(this);
+  }
 
   @Override
   protected void setupUi() {

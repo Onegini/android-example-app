@@ -36,6 +36,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.onegini.mobile.exampleapp.OneginiSDK;
@@ -59,6 +60,7 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity implements
   TextView loginMethodTextView;
   RecyclerView authenticatorsRecyclerView;
   TextView resultTextView;
+  RelativeLayout settingsAuthenticatorSelector;
 
   private AuthenticatorListItem[] authenticators;
   private AuthenticatorsAdapter authenticatorsAdapter;
@@ -79,6 +81,9 @@ public class SettingsAuthenticatorsActivity extends AppCompatActivity implements
     loginMethodTextView = findViewById(R.id.settings_authenticator_selector_text);
     authenticatorsRecyclerView = findViewById(R.id.authenticators_list);
     resultTextView = findViewById(R.id.result);
+    settingsAuthenticatorSelector = findViewById(R.id.settings_authenticator_selector);
+
+    settingsAuthenticatorSelector.setOnClickListener(this);
   }
 
   @Override

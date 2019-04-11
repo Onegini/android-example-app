@@ -98,6 +98,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     usePreferredIdentityProviderSwitchCompat = findViewById(R.id.register_with_preferred_identity_provider);
     bottomNavigationView = findViewById(R.id.bottom_navigation);
 
+    loginButton.setOnClickListener(this);
+    registerButton.setOnClickListener(this);
+
     usePreferredAuthenticatorSwitchCompat.setOnCheckedChangeListener((compoundButton, b) -> usePreferredAuthenticatorSwitchStateChanged());
     usePreferredIdentityProviderSwitchCompat.setOnCheckedChangeListener((compoundButton, b) -> setUsePreferredIdentityProviderSwitchStateChanged());
     usersSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

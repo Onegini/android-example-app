@@ -71,6 +71,11 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     changePinButton = findViewById(R.id.button_change_pin);
     changeAuthentication = findViewById(R.id.button_change_authentication);
     resultTextView = findViewById(R.id.result);
+
+    mobileAuthButton.setOnClickListener(this);
+    mobileAuthPushButton.setOnClickListener(this);
+    changeAuthentication.setOnClickListener(this);
+    changePinButton.setOnClickListener(this);
   }
 
   @Override

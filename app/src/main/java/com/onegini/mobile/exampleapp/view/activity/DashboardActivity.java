@@ -22,6 +22,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.onegini.mobile.exampleapp.OneginiSDK;
@@ -44,6 +45,11 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
   Toolbar toolbar;
   TextView dashboardWelcomeText;
+  Button authWithOtpButton;
+  Button logoutButton;
+  Button deregisterUserButton;
+  Button yourDevicesButton;
+  Button settingsButton;
 
   private UserStorage userStorage;
 
@@ -60,6 +66,17 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
   private void initUI() {
     toolbar = findViewById(R.id.toolbar);
     dashboardWelcomeText = findViewById(R.id.dashboard_welcome_text);
+    authWithOtpButton = findViewById(R.id.button_auth_with_otp);
+    logoutButton = findViewById(R.id.button_logout);
+    deregisterUserButton = findViewById(R.id.button_deregister_user);
+    yourDevicesButton = findViewById(R.id.button_your_devices);
+    settingsButton = findViewById(R.id.button_settings);
+
+    authWithOtpButton.setOnClickListener(this);
+    logoutButton.setOnClickListener(this);
+    deregisterUserButton.setOnClickListener(this);
+    yourDevicesButton.setOnClickListener(this);
+    settingsButton.setOnClickListener(this);
   }
 
   @Override

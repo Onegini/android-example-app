@@ -48,6 +48,8 @@ public class QrCodeScanActivity extends AppCompatActivity implements View.OnClic
   private void initUI() {
     qrCodeScanner = findViewById(R.id.qr_code_scanner);
     cancelButton = findViewById(R.id.qr_code_cancel_button);
+
+    cancelButton.setOnClickListener(this);
   }
 
   private void initQrCodeScanner() {

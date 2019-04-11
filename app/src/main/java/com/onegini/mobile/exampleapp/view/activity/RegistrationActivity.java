@@ -90,6 +90,9 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
     progressBar = findViewById(R.id.progress_bar_register);
     layoutRegisterContent = findViewById(R.id.layout_register_content);
     userProfileDebugText = findViewById(R.id.user_profile_debug);
+
+    createProfileButton.setOnClickListener(this);
+    cancelRegistrationButton.setOnClickListener(this);
   }
 
   private void setupUserInterface() {

@@ -43,6 +43,10 @@ public abstract class BasicAuthenticatorActivity extends AppCompatActivity imple
     positiveButton = findViewById(R.id.custom_auth_positive_button);
     negativeButton = findViewById(R.id.custom_auth_negative_button);
     errorButton = findViewById(R.id.custom_auth_error_button);
+
+    positiveButton.setOnClickListener(this);
+    negativeButton.setOnClickListener(this);
+    errorButton.setOnClickListener(this);
   }
 
   public void onPositiveButtonClicked() {

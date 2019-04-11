@@ -38,7 +38,6 @@ public class PinActivity extends AuthenticationActivity implements View.OnClickL
 
   TextView errorTextView;
 
-
   protected int failedAttemptsCount;
   protected int maxFailedAttempts;
   protected PinInputFields.PinProvidedListener pinProvidedListener;

@@ -34,6 +34,8 @@ public class MobileAuthenticationPinActivity extends PinActivity implements View
 
   private void initUI() {
     denyButton = findViewById(R.id.auth_deny_button);
+
+    denyButton.setOnClickListener(this);
   }
 
   @Override

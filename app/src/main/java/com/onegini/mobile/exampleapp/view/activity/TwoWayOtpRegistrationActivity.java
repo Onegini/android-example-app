@@ -18,6 +18,7 @@ package com.onegini.mobile.exampleapp.view.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.onegini.mobile.exampleapp.R;
@@ -29,6 +30,8 @@ public class TwoWayOtpRegistrationActivity extends AppCompatActivity implements 
 
   EditText responseCodeEditText;
   TextView challengeCodeTextView;
+  Button twoWayOtpOkButton;
+  Button twoWayOtpCancelButton;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -41,6 +44,12 @@ public class TwoWayOtpRegistrationActivity extends AppCompatActivity implements 
   private void initUI() {
     responseCodeEditText = findViewById(R.id.two_way_otp_response_code);
     challengeCodeTextView = findViewById(R.id.two_way_otp_challenge_code);
+    twoWayOtpOkButton = findViewById(R.id.two_way_otp_ok_button);
+    twoWayOtpCancelButton = findViewById(R.id.two_way_otp_cancel_button);
+
+    twoWayOtpOkButton.setOnClickListener(this);
+    twoWayOtpCancelButton.setOnClickListener(this);
+
   }
 
   public void onOkButtonClicked() {
