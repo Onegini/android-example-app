@@ -41,11 +41,11 @@ public class FingerprintActivity extends AuthenticationActivity implements View.
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_fingerprint);
     initUI();
-
     initialize();
   }
 
-  private void initUI() {
+  protected void initUI() {
+    super.initUI();
     actionTextView = findViewById(R.id.action_text);
     layoutFingerprint = findViewById(R.id.content_fingerprint);
     layoutAcceptDeny = findViewById(R.id.content_accept_deny);

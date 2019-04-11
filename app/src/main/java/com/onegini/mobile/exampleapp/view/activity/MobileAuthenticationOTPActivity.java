@@ -15,6 +15,7 @@ public class MobileAuthenticationOTPActivity extends AuthenticationActivity impl
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_push_simple);
+    initUI();
     authAcceptButton = findViewById(R.id.auth_accept_button);
     authDenyButton = findViewById(R.id.auth_deny_button);
 

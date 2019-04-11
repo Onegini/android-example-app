@@ -30,6 +30,7 @@ public class CustomAuthActivity extends AuthenticationActivity implements View.O
     setContentView(R.layout.activity_custom);
 
     initialize();
+    initUI();
   }
 
   @Override

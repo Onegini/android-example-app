@@ -30,6 +30,7 @@ public class MobileAuthenticationActivity extends AuthenticationActivity impleme
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_push_simple);
+    initUI();
     authAcceptButton = findViewById(R.id.auth_accept_button);
 
     authAcceptButton.setOnClickListener(this);

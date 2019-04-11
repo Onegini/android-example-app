@@ -56,6 +56,7 @@ public class PinActivity extends AuthenticationActivity implements View.OnClickL
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_pin);
+    initUI();
     errorTextView = findViewById(R.id.pin_error_message);
 
     initialize();

@@ -49,10 +49,9 @@ public abstract class AuthenticationActivity extends Activity {
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    initUI();
   }
 
-  private void initUI() {
+  protected void initUI() {
     welcomeTextView = findViewById(R.id.welcome_user_text);
     authenticatorMessage = findViewById(R.id.authenticator_message);
     cancelButton = findViewById(R.id.auth_cancel_button);

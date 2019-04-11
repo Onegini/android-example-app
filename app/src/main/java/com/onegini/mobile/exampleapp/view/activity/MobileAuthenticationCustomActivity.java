@@ -31,6 +31,7 @@ public class MobileAuthenticationCustomActivity extends CustomAuthActivity imple
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
     fallbackToPinButton = findViewById(R.id.fallback_to_pin_button);
     authAcceptButton = findViewById(R.id.auth_accept_button);
     authDenyButton = findViewById(R.id.auth_deny_button);
